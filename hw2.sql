@@ -39,8 +39,13 @@ ALTER TABLE courses ADD CONSTRAINT unique_course_name UNIQUE (name);
 
 -- Индексирование поля group_id в таблице students
 CREATE INDEX idx_students_group_id ON students(group_id);
-
--- Промежуточная таблица student_courses
+-- Комментарий:
+-- Этот индекс ускоряет выполнение запросов, которые фильтруют или соединяют таблицу students по group_id.
+-- Например, запросы вида SELECT * FROM students WHERE group_id = ? или JOIN на group_id будут выполняться быстрее,
+-- так как база данных будет использовать индекс для быстрого поиска подходящих строк.
+-- В результате, вместо полного сканирования таблицы, база данных использует индекс для перехода
+-- к нужной части данных, что улучшает производительность.
+--промежуточная таблица student_courses
 SELECT s.first_name, s.last_name, c.name AS course_name
 FROM students s
 JOIN student_courses sc ON s.id = sc.student_id
