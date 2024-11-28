@@ -76,33 +76,36 @@ INSERT INTO course_grades (student_id, course_id, grade, grade_str) VALUES
 (8, 4, 85, 'Отлично'),
 (8, 5, 90, 'Отлично');
 
---Пример фильтрации: Выбор студентов с оценками "Отлично" или "Хорошо"
+-- Пример фильтрации: Выбор студентов с оценками "Отлично" или "Хорошо"
 SELECT s.first_name, s.last_name, g.grade, g.grade_str
 FROM students s
 JOIN course_grades g ON s.id = g.student_id
-WHERE g.grade_str IN ('Отлично', 'Хорошо');
+WHERE g.grade_str IN ('Отлично', 'Хорошо')
+LIMIT 10;
 
---Пример агрегации: Количество студентов по каждому типу оценок в курсе
-
+-- Пример агрегации: Количество студентов по каждому типу оценок в курсе
 SELECT c.name AS course_name, g.grade_str, COUNT(g.student_id) AS student_count
 FROM courses c
 JOIN course_grades g ON c.id = g.course_id
 GROUP BY c.name, g.grade_str
-ORDER BY c.name, g.grade_str;
+ORDER BY c.name, g.grade_str
+LIMIT 10;
 
-
---Пример агрегации: Средняя оценка по каждому курс
+-- Пример агрегации: Средняя оценка по каждому курсу
 SELECT c.name AS course_name, AVG(g.grade) AS average_grade
 FROM courses c
 JOIN course_grades g ON c.id = g.course_id
-GROUP BY c.name;
+GROUP BY c.name
+LIMIT 10;
 
---Дополнительный пример: Средняя оценка студентов в каждой группе
+-- Дополнительный пример: Средняя оценка студентов в каждой группе
 SELECT gr.full_name AS group_name, AVG(cg.grade) AS average_grade
 FROM groups gr
 JOIN students st ON gr.id = st.group_id
 JOIN course_grades cg ON st.id = cg.student_id
-GROUP BY gr.full_name;
+GROUP BY gr.full_name
+LIMIT 10;
+
 
 
 
